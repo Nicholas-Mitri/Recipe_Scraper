@@ -1,0 +1,3 @@
+recipe_link:
+  css: 'a[data-test-recipe-card-link="true"][title="Download Recipe Card"]'
+  type: Link
