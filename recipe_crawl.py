@@ -80,12 +80,12 @@ def crawl_domain(base_url, max_pages=100):
 
             # Find all links
             for link in soup.find_all("a", href=True):
-                href = link.get("href")
+                href = link.get("href")  # type: ignore
                 if not href:
                     continue
 
                 # Convert relative URLs to absolute URLs
-                absolute_link = urljoin(current_url, href)
+                absolute_link = urljoin(current_url, href)  # type: ignore
 
                 # Parse the link
                 parsed_link = urlparse(absolute_link)

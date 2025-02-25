@@ -114,7 +114,6 @@ def download_recipe_pdf(url, output_dir):
                     print(f"Error downloading PDF: {e}")
         else:
             print("No recipe card download link found on this page")
-
     except Exception as e:
         print(f"Error extracting PDF from {url}: {e}")
     finally:
