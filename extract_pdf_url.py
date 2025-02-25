@@ -84,43 +84,35 @@ def download_recipe_pdf(url, output_dir):
         if extracted_data and extracted_data.get("recipe_link"):
             download_link = extracted_data["recipe_link"]
             print(f"Found recipe card download link: {download_link}")
+            try:
+                # Extract recipe name from URL for the filename
+                recipe_name = url.split("/")[-1]
+                if not recipe_name:
+                    recipe_name = url.split("/")[-2]
+                # Create a regex pattern to extract words from the recipe name
+                pattern = re.compile(r"\b[a-z]+\b")
+                # Extract words from the recipe name, excluding the last word (likely an ID)
+                matches = pattern.findall(recipe_name.lower())
+                # Create a filename with recipe name in Title Case and nutritional information
+                pdf_filename = (
+                    " ".join(matches).title()
+                    + f" - {extracted_data['calories']}-P{extracted_data['protein']}-C{extracted_data['carbs']}-F{extracted_data['fats']}"
+                    + ".pdf"
+                )
 
-            # Download the PDF using the recipe card download link
-            if extracted_data and extracted_data.get("recipe_link"):
-                download_link = extracted_data["recipe_link"]
-                print(f"Found recipe card download link: {download_link}")
+                # Construct the full path where the PDF will be saved
+                pdf_path = os.path.join(output_dir, pdf_filename)
 
-                try:
-                    # Extract recipe name from URL for the filename
-                    recipe_name = url.split("/")[-1]
-                    if not recipe_name:
-                        recipe_name = url.split("/")[-2]
-                    # Create a regex pattern to extract words from the recipe name
-                    pattern = re.compile(r"\b[a-z]+\b")
-                    # Extract words from the recipe name, excluding the last word (likely an ID)
-                    matches = pattern.findall(recipe_name.lower())[:-1]
-                    # Create a filename with recipe name in Title Case and nutritional information
-                    pdf_filename = (
-                        " ".join(matches).title()
-                        + f"-{extracted_data['calories']}-P{extracted_data['protein']}-C{extracted_data['carbs']}-F{extracted_data['fats']}"
-                        + ".pdf"
-                    )
-
-                    # Construct the full path where the PDF will be saved
-                    pdf_path = os.path.join(output_dir, pdf_filename)
-
-                    # Download the PDF
-                    response = requests.get(download_link)
-                    if response.status_code == 200:
-                        with open(pdf_path, "wb") as pdf_file:
-                            pdf_file.write(response.content)
-                        print(f"Successfully downloaded PDF to {pdf_path}")
-                    else:
-                        print(
-                            f"Failed to download PDF: HTTP status {response.status_code}"
-                        )
-                except Exception as e:
-                    print(f"Error downloading PDF: {e}")
+                # Download the PDF
+                response = requests.get(download_link)
+                if response.status_code == 200:
+                    with open(pdf_path, "wb") as pdf_file:
+                        pdf_file.write(response.content)
+                    print(f"Successfully downloaded PDF to {pdf_path}")
+                else:
+                    print(f"Failed to download PDF: HTTP status {response.status_code}")
+            except Exception as e:
+                print(f"Error downloading PDF: {e}")
         else:
             print("No recipe card download link found on this page")
     except Exception as e:
