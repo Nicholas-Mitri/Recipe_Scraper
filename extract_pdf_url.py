@@ -57,7 +57,9 @@ def download_recipe_pdf(url, output_dir):
     print(f"Extracting PDF download link from {url}...")
 
     # Initialize the Chrome driver
-    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
+    driver = webdriver.Chrome(
+        service=Service(ChromeDriverManager().install()), options=chrome_options
+    )
 
     try:
         # Load the page
@@ -150,6 +152,4 @@ def main():
 
 
 if __name__ == "__main__":
-    import json  # Required for the Chrome PDF preferences
-
     main()
