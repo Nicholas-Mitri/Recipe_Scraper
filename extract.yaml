@@ -1,3 +1,15 @@
 recipe_link:
   css: 'a[data-test-recipe-card-link="true"][title="Download Recipe Card"]'
   type: Link
+calories:
+  css: "#page > article > div.web-46n5el > div > div > div > div > div.web-a5m92f > div.web-1ylftz0 > div:nth-child(2) > div:nth-child(2) > span"
+  type: Text
+protein:
+  css: "#page > article > div.web-46n5el > div > div > div > div > div.web-a5m92f > div.web-1ylftz0 > div:nth-child(2) > div:nth-child(8) > span"
+  type: Text
+carbs:
+  css: "#page > article > div.web-46n5el > div > div > div > div > div.web-a5m92f > div.web-1ylftz0 > div:nth-child(2) > div:nth-child(5) > span"
+  type: Text
+fats:
+  css: "#page > article > div.web-46n5el > div > div > div > div > div.web-a5m92f > div.web-1ylftz0 > div:nth-child(2) > div:nth-child(3) > span"
+  type: Text

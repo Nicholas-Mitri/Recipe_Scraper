@@ -24,7 +24,7 @@ Requirements:
 """
 
 import os
-import time
+import time, re
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
@@ -95,9 +95,18 @@ def download_recipe_pdf(url, output_dir):
                     recipe_name = url.split("/")[-1]
                     if not recipe_name:
                         recipe_name = url.split("/")[-2]
+                    # Create a regex pattern to extract words from the recipe name
+                    pattern = re.compile(r"\b[a-z]+\b")
+                    # Extract words from the recipe name, excluding the last word (likely an ID)
+                    matches = pattern.findall(recipe_name.lower())[:-1]
+                    # Create a filename with recipe name in Title Case and nutritional information
+                    pdf_filename = (
+                        " ".join(matches).title()
+                        + f"-{extracted_data['calories']}-P{extracted_data['protein']}-C{extracted_data['carbs']}-F{extracted_data['fats']}"
+                        + ".pdf"
+                    )
 
-                    # Create a clean filename
-                    pdf_filename = f"{recipe_name}.pdf"
+                    # Construct the full path where the PDF will be saved
                     pdf_path = os.path.join(output_dir, pdf_filename)
 
                     # Download the PDF
